@@ -2,6 +2,8 @@
 
 A simple mini-game created with HTML, CSS, and JavaScript.
 
+🎮 **[Play the Live Game Here!](https://mini-game-brain-vs-beast.onrender.com)**
+
 ## Getting Started
 
 1. Clone the repository.
