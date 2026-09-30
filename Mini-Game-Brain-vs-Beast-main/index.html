@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+       <p>Brain vs Beast</p>
+    </header>
+    <main>
+        <div class="game-container">
+            <div class="nav-bar">
+                <div class="level">
+                    <label>
+                        <input type="radio" name="difficulty" value="1" checked> Easy
+                    </label>
+                    <label>
+                        <input type="radio" name="difficulty" value="2"> Medium
+                    </label>
+                    <label>
+                        <input type="radio" name="difficulty" value="3"> Hard
+                    </label>
+                </div>
+                <div id="category-badge" class="category-badge" title="Click to Change Category">
+                    <span class="cat-badge-icon">🎲</span> <span id="category-badge-text">Mixed Questions</span>
+                </div>
+                <div class="top-controls-right">
+                    <div id="game-timer" class="game-timer" title="Elapsed Time">
+                        ⏱️ 00:00
+                    </div>
+                    <div id="question-progress" class="question-tracker">
+                        Question: 1 / 20
+                    </div>
+                    <div id="score" class="scoreboard">
+                        Score: 0
+                    </div>
+                    <div id="lives">
+                        Lives: 3
+                    </div>
+                    <div class="on-off">
+                        <div class="stop">Stop</div>
+                        <div class="new-game">New Game</div>
+                        <div id="leaderboard-btn" class="leaderboard-btn" title="View Best Scores & Times">🏆 Best</div>
+                        <div id="sound-toggle" class="sound-toggle" title="Toggle Sound">🔊</div>
+                        <div class="start">Click to Start</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Animated Jungle Monkeys on Trees -->
+            <div class="jungle-monkeys" aria-hidden="true">
+                <div class="monkey-container monkey-left-swing">
+                    <svg viewBox="0 0 80 150" class="monkey-svg" shape-rendering="crispEdges">
+                        <line x1="40" y1="0" x2="40" y2="65" stroke="#3d6e24" stroke-width="4" stroke-dasharray="6 2" />
+                        <circle cx="36" cy="22" r="4.5" fill="#589e34" />
+                        <circle cx="43" cy="42" r="4" fill="#589e34" />
+                        <g class="monkey-body">
+                            <path d="M30 110 Q10 125 15 100 Q18 85 28 92" fill="none" stroke="#7A4B2A" stroke-width="4.5" stroke-linecap="round"/>
+                            <rect x="25" y="112" width="8" height="6" fill="#5C3418" rx="2" />
+                            <rect x="43" y="112" width="8" height="6" fill="#5C3418" rx="2" />
+                            <rect x="24" y="80" width="28" height="34" fill="#7A4B2A" rx="8" />
+                            <rect x="28" y="86" width="20" height="23" fill="#E8B878" rx="6" />
+                            <path d="M26 86 Q15 72 36 64" fill="none" stroke="#7A4B2A" stroke-width="5" stroke-linecap="round" />
+                            <path d="M50 86 Q61 72 44 62" fill="none" stroke="#7A4B2A" stroke-width="5" stroke-linecap="round" />
+                            <circle cx="37" cy="64" r="4" fill="#5C3418" />
+                            <circle cx="43" cy="62" r="4" fill="#5C3418" />
+                            <circle cx="21" cy="56" r="6" fill="#7A4B2A" />
+                            <circle cx="21" cy="56" r="3.5" fill="#F4A460" />
+                            <circle cx="55" cy="56" r="6" fill="#7A4B2A" />
+                            <circle cx="55" cy="56" r="3.5" fill="#F4A460" />
+                            <rect x="23" y="44" width="30" height="26" fill="#7A4B2A" rx="8" />
+                            <rect x="26" y="49" width="24" height="18" fill="#E8B878" rx="5" />
+                            <rect x="29" y="53" width="4" height="5" fill="#221105" />
+                            <rect x="30" y="53" width="2" height="2" fill="#FFFFFF" />
+                            <rect x="43" y="53" width="4" height="5" fill="#221105" />
+                            <rect x="44" y="53" width="2" height="2" fill="#FFFFFF" />
+                            <ellipse cx="38" cy="61" rx="5" ry="3" fill="#DF9F5C" />
+                            <ellipse cx="38" cy="59.5" rx="2" ry="1.5" fill="#4A2508" />
+                            <path d="M35 62 Q38 65 41 62" fill="none" stroke="#4A2508" stroke-width="1.5" stroke-linecap="round" />
+                        </g>
+                    </svg>
+                </div>
+                <div class="monkey-container monkey-right-sit">
+                    <svg viewBox="0 0 90 90" class="monkey-svg" shape-rendering="crispEdges">
+                        <path d="M0 68 Q45 66 90 69 L90 80 Q45 77 0 80 Z" fill="#4E3629" />
+                        <ellipse cx="35" cy="67" rx="8" ry="2" fill="#3D5A20" />
+                        <ellipse cx="65" cy="68" rx="6" ry="2" fill="#3D5A20" />
+                        <g class="monkey-tail-animated">
+                            <path d="M32 64 Q22 80 18 88 Q13 95 8 92 Q4 88 10 82" fill="none" stroke="#7A4B2A" stroke-width="4.5" stroke-linecap="round" />
+                        </g>
+                        <g class="monkey-seated-body">
+                            <rect x="31" y="64" width="9" height="6" fill="#5C3418" rx="2" />
+                            <rect x="49" y="64" width="9" height="6" fill="#5C3418" rx="2" />
+                            <rect x="30" y="38" width="28" height="28" fill="#7A4B2A" rx="8" />
+                            <rect x="34" y="42" width="20" height="21" fill="#E8B878" rx="6" />
+                            <path d="M31 44 Q22 54 32 64" fill="none" stroke="#7A4B2A" stroke-width="4.5" stroke-linecap="round" />
+                            <path d="M57 44 Q66 54 56 64" fill="none" stroke="#7A4B2A" stroke-width="4.5" stroke-linecap="round" />
+                            <circle cx="32" cy="64" r="3.5" fill="#5C3418" />
+                            <circle cx="56" cy="64" r="3.5" fill="#5C3418" />
+                            <circle cx="27" cy="22" r="5.5" fill="#7A4B2A" />
+                            <circle cx="27" cy="22" r="3" fill="#F4A460" />
+                            <circle cx="61" cy="22" r="5.5" fill="#7A4B2A" />
+                            <circle cx="61" cy="22" r="3" fill="#F4A460" />
+                            <rect x="29" y="12" width="30" height="26" fill="#7A4B2A" rx="8" />
+                            <rect x="32" y="16" width="24" height="18" fill="#E8B878" rx="5" />
+                            <rect x="35" y="20" width="4" height="5" fill="#221105" />
+                            <rect x="36" y="20" width="2" height="2" fill="#FFFFFF" />
+                            <rect x="49" y="20" width="4" height="5" fill="#221105" />
+                            <rect x="50" y="20" width="2" height="2" fill="#FFFFFF" />
+                            <ellipse cx="44" cy="27" rx="5" ry="3" fill="#DF9F5C" />
+                            <ellipse cx="44" cy="25.5" rx="2" ry="1.5" fill="#4A2508" />
+                            <path d="M41 28 Q44 31 47 28" fill="none" stroke="#4A2508" stroke-width="1.5" stroke-linecap="round" />
+                        </g>
+                    </svg>
+                </div>
+                <div class="monkey-container monkey-right-hang">
+                    <svg viewBox="0 0 70 120" class="monkey-svg" shape-rendering="crispEdges">
+                        <line x1="20" y1="0" x2="50" y2="0" stroke="#38761D" stroke-width="6" />
+                        <path d="M35 3 Q48 3 45 15 Q40 28 35 35" fill="none" stroke="#7A4B2A" stroke-width="4.5" stroke-linecap="round" />
+                        <g class="monkey-hanging-body">
+                            <rect x="23" y="35" width="24" height="28" fill="#7A4B2A" rx="7" />
+                            <rect x="27" y="38" width="16" height="19" fill="#E8B878" rx="5" />
+                            <path d="M25 40 Q15 32 18 24" fill="none" stroke="#7A4B2A" stroke-width="4" stroke-linecap="round" />
+                            <path d="M45 40 Q55 32 52 24" fill="none" stroke="#7A4B2A" stroke-width="4" stroke-linecap="round" />
+                            <circle cx="18" cy="23" r="3" fill="#5C3418" />
+                            <circle cx="52" cy="23" r="3" fill="#5C3418" />
+                            <rect x="22" y="63" width="26" height="24" fill="#7A4B2A" rx="7" />
+                            <circle cx="19" cy="74" r="5" fill="#7A4B2A" />
+                            <circle cx="19" cy="74" r="2.8" fill="#F4A460" />
+                            <circle cx="51" cy="74" r="5" fill="#7A4B2A" />
+                            <circle cx="51" cy="74" r="2.8" fill="#F4A460" />
+                            <rect x="25" y="66" width="20" height="17" fill="#E8B878" rx="4" />
+                            <rect x="28" y="70" width="3.5" height="4" fill="#221105" />
+                            <rect x="29" y="70" width="1.5" height="1.5" fill="#FFFFFF" />
+                            <rect x="38" y="70" width="3.5" height="4" fill="#221105" />
+                            <rect x="39" y="70" width="1.5" height="1.5" fill="#FFFFFF" />
+                            <ellipse cx="35" cy="78" rx="4" ry="2.5" fill="#DF9F5C" />
+                            <ellipse cx="35" cy="77" rx="1.5" ry="1.2" fill="#4A2508" />
+                            <path d="M32 79 Q35 81.5 38 79" fill="none" stroke="#4A2508" stroke-width="1.2" stroke-linecap="round" />
+                            <path d="M23 48 Q10 60 14 75" fill="none" stroke="#7A4B2A" stroke-width="4" stroke-linecap="round" />
+                            <path d="M47 48 Q60 62 55 78" fill="none" stroke="#7A4B2A" stroke-width="4" stroke-linecap="round" />
+                            <path d="M54 80 Q60 84 64 80" fill="none" stroke="#FFD700" stroke-width="3.5" stroke-linecap="round" />
+                        </g>
+                    </svg>
+                </div>
+                <!-- Monkey 4: Left tree trunk peek-a-boo -->
+                <div class="monkey-container monkey-left-peek">
+                    <svg viewBox="0 0 70 70" class="monkey-svg" shape-rendering="crispEdges">
+                        <g class="monkey-peek-body">
+                            <circle cx="16" cy="22" r="5" fill="#7A4B2A" />
+                            <circle cx="16" cy="22" r="2.8" fill="#F4A460" />
+                            <rect x="18" y="14" width="26" height="24" fill="#7A4B2A" rx="7" />
+                            <rect x="22" y="18" width="20" height="18" fill="#E8B878" rx="5" />
+                            <rect x="25" y="22" width="3.5" height="4.5" fill="#221105" />
+                            <rect x="26" y="22" width="1.5" height="1.5" fill="#FFFFFF" />
+                            <rect x="34" y="22" width="3.5" height="4.5" fill="#221105" />
+                            <rect x="35" y="22" width="1.5" height="1.5" fill="#FFFFFF" />
+                            <ellipse cx="31" cy="29" rx="4" ry="2.5" fill="#DF9F5C" />
+                            <path d="M29 30 Q31 32 33 30" fill="none" stroke="#4A2508" stroke-width="1.2" stroke-linecap="round" />
+                            <rect x="8" y="32" width="10" height="7" fill="#7A4B2A" rx="3" />
+                            <circle cx="9" cy="35" r="2" fill="#5C3418" />
+                            <circle cx="13" cy="36" r="2" fill="#5C3418" />
+                            <g class="monkey-waving-paw">
+                                <rect x="42" y="28" width="9" height="7" fill="#7A4B2A" rx="3" />
+                                <circle cx="49" cy="30" r="2" fill="#5C3418" />
+                                <circle cx="49" cy="34" r="2" fill="#5C3418" />
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+                <!-- Monkey 5: Right lower vine baby monkey -->
+                <div class="monkey-container monkey-right-baby">
+                    <svg viewBox="0 0 65 75" class="monkey-svg" shape-rendering="crispEdges">
+                        <path d="M32 0 Q38 18 30 32" fill="none" stroke="#3D6E24" stroke-width="3" stroke-dasharray="4 2" />
+                        <g class="baby-monkey-body">
+                            <path d="M30 46 Q42 36 34 26 Q28 18 32 10" fill="none" stroke="#7A4B2A" stroke-width="3.5" stroke-linecap="round" />
+                            <rect x="18" y="32" width="20" height="22" fill="#7A4B2A" rx="6" />
+                            <rect x="21" y="35" width="14" height="15" fill="#E8B878" rx="4" />
+                            <circle cx="14" cy="22" r="4" fill="#7A4B2A" />
+                            <circle cx="14" cy="22" r="2.2" fill="#F4A460" />
+                            <circle cx="38" cy="22" r="4" fill="#7A4B2A" />
+                            <circle cx="38" cy="22" r="2.2" fill="#F4A460" />
+                            <rect x="16" y="14" width="22" height="19" fill="#7A4B2A" rx="6" />
+                            <rect x="18" y="17" width="18" height="14" fill="#E8B878" rx="4" />
+                            <rect x="20" y="20" width="3.5" height="4" fill="#221105" />
+                            <rect x="21" y="20" width="1.5" height="1.5" fill="#FFFFFF" />
+                            <rect x="28" y="20" width="3.5" height="4" fill="#221105" />
+                            <rect x="29" y="20" width="1.5" height="1.5" fill="#FFFFFF" />
+                            <ellipse cx="26" cy="26" rx="3.5" ry="2" fill="#DF9F5C" />
+                            <path d="M24 27 Q26 29 28 27" fill="none" stroke="#4A2508" stroke-width="1" stroke-linecap="round" />
+                            <path d="M19 36 Q10 28 20 20" fill="none" stroke="#7A4B2A" stroke-width="3.2" stroke-linecap="round" />
+                            <path d="M34 36 Q42 28 32 20" fill="none" stroke="#7A4B2A" stroke-width="3.2" stroke-linecap="round" />
+                            <rect x="19" y="52" width="6" height="6" fill="#5C3418" rx="2" />
+                            <rect x="28" y="52" width="6" height="6" fill="#5C3418" rx="2" />
+                            <ellipse cx="38" cy="24" rx="4" ry="2.5" fill="#4CAF50" transform="rotate(-25 38 24)" />
+                        </g>
+                    </svg>
+                </div>
+                <!-- Monkey 6: Left lower drummer / bongo monkey -->
+                <div class="monkey-container monkey-left-drummer" title="Bongo Monkey!">
+                    <svg viewBox="0 0 85 85" class="monkey-svg" shape-rendering="crispEdges">
+                        <rect x="0" y="65" width="85" height="14" fill="#4A3319" rx="3" />
+                        <ellipse cx="20" cy="65" rx="8" ry="2.5" fill="#3D5A20" />
+                        <rect x="22" y="52" width="16" height="15" fill="#8B4513" rx="2" stroke="#2B1704" stroke-width="1.5" />
+                        <ellipse cx="30" cy="52" rx="8" ry="3" fill="#D2B48C" stroke="#2B1704" stroke-width="1.5" />
+                        <rect x="42" y="50" width="18" height="17" fill="#A0522D" rx="2" stroke="#2B1704" stroke-width="1.5" />
+                        <ellipse cx="51" cy="50" rx="9" ry="3" fill="#DEB887" stroke="#2B1704" stroke-width="1.5" />
+                        <g class="drummer-monkey-body">
+                            <rect x="28" y="26" width="26" height="26" fill="#7A4B2A" rx="7" />
+                            <rect x="32" y="29" width="18" height="19" fill="#E8B878" rx="5" />
+                            <g class="drummer-head">
+                                <circle cx="25" cy="18" r="4.5" fill="#7A4B2A" />
+                                <circle cx="25" cy="18" r="2.5" fill="#F4A460" />
+                                <circle cx="55" cy="18" r="4.5" fill="#7A4B2A" />
+                                <circle cx="55" cy="18" r="2.5" fill="#F4A460" />
+                                <rect x="26" y="8" width="28" height="22" fill="#7A4B2A" rx="7" />
+                                <rect x="29" y="11" width="22" height="16" fill="#E8B878" rx="4" />
+                                <rect x="33" y="14" width="3.5" height="4" fill="#221105" />
+                                <rect x="34" y="14" width="1.5" height="1.5" fill="#FFFFFF" />
+                                <rect x="44" y="14" width="3.5" height="4" fill="#221105" />
+                                <rect x="45" y="14" width="1.5" height="1.5" fill="#FFFFFF" />
+                                <ellipse cx="40" cy="20" rx="3.5" ry="2" fill="#DF9F5C" />
+                                <path d="M38 21 Q40 23 42 21" fill="none" stroke="#4A2508" stroke-width="1.2" stroke-linecap="round" />
+                            </g>
+                            <path class="bongo-arm-left" d="M28 32 Q20 42 29 49" fill="none" stroke="#7A4B2A" stroke-width="4" stroke-linecap="round" />
+                            <path class="bongo-arm-right" d="M52 32 Q60 40 51 47" fill="none" stroke="#7A4B2A" stroke-width="4" stroke-linecap="round" />
+                            <path d="M54 48 Q64 45 68 55 Q72 65 65 65" fill="none" stroke="#7A4B2A" stroke-width="3" stroke-linecap="round" />
+                        </g>
+                    </svg>
+                </div>
+                <!-- Monkey 7: Top canopy lookout monkey -->
+                <div class="monkey-container monkey-top-lookout" title="Lookout Monkey!">
+                    <svg viewBox="0 0 75 75" class="monkey-svg" shape-rendering="crispEdges">
+                        <rect x="0" y="55" width="75" height="10" fill="#4E3629" rx="2" />
+                        <ellipse cx="50" cy="55" rx="8" ry="2" fill="#38761D" />
+                        <g class="lookout-monkey-body">
+                            <rect x="25" y="28" width="24" height="26" fill="#7A4B2A" rx="6" />
+                            <rect x="29" y="31" width="16" height="18" fill="#E8B878" rx="4" />
+                            <rect x="26" y="52" width="7" height="5" fill="#5C3418" rx="2" />
+                            <rect x="41" y="52" width="7" height="5" fill="#5C3418" rx="2" />
+                            <g class="lookout-head">
+                                <circle cx="22" cy="18" r="4" fill="#7A4B2A" />
+                                <circle cx="22" cy="18" r="2.2" fill="#F4A460" />
+                                <circle cx="52" cy="18" r="4" fill="#7A4B2A" />
+                                <circle cx="52" cy="18" r="2.2" fill="#F4A460" />
+                                <rect x="24" y="9" width="26" height="21" fill="#7A4B2A" rx="6" />
+                                <rect x="27" y="12" width="20" height="15" fill="#E8B878" rx="4" />
+                                <rect x="31" y="15" width="3.5" height="4" fill="#221105" />
+                                <rect x="32" y="15" width="1.5" height="1.5" fill="#FFFFFF" />
+                                <rect x="41" y="15" width="3.5" height="4" fill="#221105" />
+                                <rect x="42" y="15" width="1.5" height="1.5" fill="#FFFFFF" />
+                                <ellipse cx="37" cy="21" rx="3.5" ry="2" fill="#DF9F5C" />
+                                <polygon points="18,10 37,-2 56,10" fill="#2E7D32" stroke="#1B5E20" stroke-width="1.5" />
+                                <line x1="37" y1="-2" x2="37" y2="10" stroke="#81C784" stroke-width="1.5" />
+                            </g>
+                            <path class="scout-arm-shade" d="M46 30 Q54 20 44 13" fill="none" stroke="#7A4B2A" stroke-width="3.5" stroke-linecap="round" />
+                            <path class="scout-arm-point" d="M26 32 Q14 26 6 30" fill="none" stroke="#7A4B2A" stroke-width="3.5" stroke-linecap="round" />
+                            <circle cx="5" cy="30" r="2" fill="#5C3418" />
+                            <path d="M46 48 Q60 45 58 35 Q55 28 62 30" fill="none" stroke="#7A4B2A" stroke-width="3" stroke-linecap="round" />
+                        </g>
+                    </svg>
+                </div>
+                <!-- Monkey 8: Trapeze swing acrobat monkey -->
+                <div class="monkey-container monkey-trapeze" title="Acrobat Monkey!">
+                    <svg viewBox="0 0 80 120" class="monkey-svg" shape-rendering="crispEdges">
+                        <line x1="20" y1="0" x2="28" y2="60" stroke="#3D6E24" stroke-width="2.5" stroke-dasharray="5 2" />
+                        <line x1="60" y1="0" x2="52" y2="60" stroke="#3D6E24" stroke-width="2.5" stroke-dasharray="5 2" />
+                        <rect x="22" y="60" width="36" height="4" fill="#795548" rx="1.5" />
+                        <g class="trapeze-monkey-body">
+                            <path d="M30 60 L32 70" stroke="#7A4B2A" stroke-width="3.5" stroke-linecap="round" />
+                            <path d="M50 60 L48 70" stroke="#7A4B2A" stroke-width="3.5" stroke-linecap="round" />
+                            <rect x="28" y="70" width="24" height="25" fill="#7A4B2A" rx="6" />
+                            <rect x="32" y="73" width="16" height="18" fill="#E8B878" rx="4" />
+                            <circle cx="25" cy="102" r="4" fill="#7A4B2A" />
+                            <circle cx="25" cy="102" r="2.2" fill="#F4A460" />
+                            <circle cx="55" cy="102" r="4" fill="#7A4B2A" />
+                            <circle cx="55" cy="102" r="2.2" fill="#F4A460" />
+                            <rect x="27" y="93" width="26" height="21" fill="#7A4B2A" rx="6" />
+                            <rect x="30" y="95" width="20" height="15" fill="#E8B878" rx="4" />
+                            <rect x="34" y="98" width="3.5" height="4" fill="#221105" />
+                            <rect x="35" y="98" width="1.5" height="1.5" fill="#FFFFFF" />
+                            <rect x="43" y="98" width="3.5" height="4" fill="#221105" />
+                            <rect x="44" y="98" width="1.5" height="1.5" fill="#FFFFFF" />
+                            <ellipse cx="40" cy="104" rx="3.5" ry="2" fill="#DF9F5C" />
+                            <path d="M38 106 Q40 108 42 106" fill="none" stroke="#4A2508" stroke-width="1.2" stroke-linecap="round" />
+                            <path d="M31 72 Q22 65 26 58" fill="none" stroke="#7A4B2A" stroke-width="3.2" stroke-linecap="round" />
+                            <path d="M49 72 Q58 65 54 58" fill="none" stroke="#7A4B2A" stroke-width="3.2" stroke-linecap="round" />
+                            <path class="trapeze-tail" d="M40 70 Q42 50 35 44 Q28 38 32 30" fill="none" stroke="#7A4B2A" stroke-width="3" stroke-linecap="round" />
+                        </g>
+                    </svg>
+                </div>
+                <!-- Ambient Floating Jungle Leaves -->
+                <div class="jungle-leaf jungle-leaf-1">🍃</div>
+                <div class="jungle-leaf jungle-leaf-2">🌿</div>
+            </div>
+            <div class="main-container">
+                <div class="math-quiz">
+                    <div id="answer-feedback" class="answer-feedback hidden">
+                        <div id="feedback-title" class="feedback-title"></div>
+                        <div id="feedback-msg" class="feedback-msg"></div>
+                    </div>
+                    <div id="question-category-tag" class="question-category-tag">🎲 Mixed Questions • Easy</div>
+                    <div class="question">Start to play</div>
+                        <div class="buttons">
+                            <div class="green">True</div>
+                            <div class="red">False</div>
+                        </div>
+                </div>
+                <div id="final-score" class="result-panel">
+                    <div class="result-badge-container">
+                        <div id="result-winner" class="result-winner">Brain Wins!</div>
+                    </div>
+                    <div class="result-stats">
+                        <div class="stat-card">
+                            <span class="stat-label">Category:</span>
+                            <span id="result-category" class="stat-value">Mixed Questions</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Difficulty:</span>
+                            <span id="result-difficulty" class="stat-value">Easy</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Final Score:</span>
+                            <span id="result-score" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Elapsed Time:</span>
+                            <span id="result-time" class="stat-value">00:00</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Correct Answers:</span>
+                            <span id="result-accuracy" class="stat-value">0 / 20</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Remaining Lives:</span>
+                            <span id="result-lives" class="stat-value">0</span>
+                        </div>
+                    </div>
+                    <div class="result-actions">
+                        <button id="restart-btn" class="result-restart-btn">Play Again</button>
+                        <button id="result-leaderboard-btn" class="result-leaderboard-btn">🏆 Records</button>
+                    </div>
+                </div>
+                <div class="left">
+                    
+                </div>
+                <div class="game-path">
+                </div>
+                <div class="right">
+                    
+                </div>
+            </div>
+            
+        </div>
+        <div class="man">
+            <div class="man-jump-fx"></div>
+        </div>
+        <div class="monster"></div>
+    </main>
+    <footer>
+        Created with ♥ by Harshika Sharma.
+    </footer>
+
+    <!-- Question Category & Difficulty Selection Modal -->
+    <div id="category-modal" class="category-modal hidden" aria-modal="true" role="dialog">
+        <div class="category-backdrop"></div>
+        <div class="category-content">
+            <div class="category-header">
+                <div class="category-title-group">
+                    <h2 class="category-title">🧠 SELECT QUESTION CATEGORY 🌴</h2>
+                    <p class="category-subtitle">Choose your arena of knowledge and game difficulty</p>
+                </div>
+                <button id="category-close" class="category-close-btn" aria-label="Close Category Selection">✕</button>
+            </div>
+
+            <div class="category-step-badge">STEP 1: CHOOSE CATEGORY</div>
+            <div class="category-grid" id="category-grid">
+                <div class="category-card" data-category="General Knowledge" tabindex="0" role="button">
+                    <div class="cat-card-icon">🌍</div>
+                    <div class="cat-card-info">
+                        <div class="cat-card-name">General Knowledge</div>
+                        <div class="cat-card-desc">World, Science, History & Nature</div>
+                    </div>
+                    <div class="cat-card-check">✓</div>
+                </div>
+                <div class="category-card" data-category="Artificial Intelligence" tabindex="0" role="button">
+                    <div class="cat-card-icon">🤖</div>
+                    <div class="cat-card-info">
+                        <div class="cat-card-name">Artificial Intelligence</div>
+                        <div class="cat-card-desc">Machine Learning, Neural Nets & NLP</div>
+                    </div>
+                    <div class="cat-card-check">✓</div>
+                </div>
+                <div class="category-card" data-category="Data Science" tabindex="0" role="button">
+                    <div class="cat-card-icon">📊</div>
+                    <div class="cat-card-info">
+                        <div class="cat-card-name">Data Science</div>
+                        <div class="cat-card-desc">Statistics, Python, Analytics & Data</div>
+                    </div>
+                    <div class="cat-card-check">✓</div>
+                </div>
+                <div class="category-card" data-category="Computer Science" tabindex="0" role="button">
+                    <div class="cat-card-icon">💻</div>
+                    <div class="cat-card-info">
+                        <div class="cat-card-name">Computer Science</div>
+                        <div class="cat-card-desc">Algorithms, OS, Networks & Code</div>
+                    </div>
+                    <div class="cat-card-check">✓</div>
+                </div>
+                <div class="category-card" data-category="Aptitude & Logical Reasoning" tabindex="0" role="button">
+                    <div class="cat-card-icon">🧩</div>
+                    <div class="cat-card-info">
+                        <div class="cat-card-name">Aptitude & Logic</div>
+                        <div class="cat-card-desc">Puzzles, Patterns, Math & Deductions</div>
+                    </div>
+                    <div class="cat-card-check">✓</div>
+                </div>
+                <div class="category-card active" data-category="Mixed Questions" tabindex="0" role="button">
+                    <div class="cat-card-badge">RECOMMENDED</div>
+                    <div class="cat-card-icon">🎲</div>
+                    <div class="cat-card-info">
+                        <div class="cat-card-name">Mixed Questions</div>
+                        <div class="cat-card-desc">All Categories Combined (All / Mixed)</div>
+                    </div>
+                    <div class="cat-card-check">✓</div>
+                </div>
+            </div>
+
+            <div class="category-step-badge">STEP 2: SELECT DIFFICULTY</div>
+            <div class="modal-difficulty-selector">
+                <button type="button" class="modal-diff-btn active" data-level="1">
+                    <span class="diff-circle easy-circle"></span>
+                    <span class="diff-btn-title">Easy</span>
+                    <span class="diff-btn-details">3 Lives • Steady Run</span>
+                </button>
+                <button type="button" class="modal-diff-btn" data-level="2">
+                    <span class="diff-circle med-circle"></span>
+                    <span class="diff-btn-title">Medium</span>
+                    <span class="diff-btn-details">2 Lives • Swift Beast</span>
+                </button>
+                <button type="button" class="modal-diff-btn" data-level="3">
+                    <span class="diff-circle hard-circle"></span>
+                    <span class="diff-btn-title">Hard</span>
+                    <span class="diff-btn-details">1 Life • Extreme Rush</span>
+                </button>
+            </div>
+
+            <div class="category-footer">
+                <button id="cancel-category-btn" class="cancel-category-btn">Cancel</button>
+                <button id="start-battle-btn" class="start-battle-btn">⚡ ENTER BATTLE ⚡</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Arcade Leaderboard Modal -->
+    <div id="leaderboard-modal" class="leaderboard-modal hidden" aria-modal="true" role="dialog">
+        <div class="leaderboard-backdrop"></div>
+        <div class="leaderboard-content">
+            <div class="leaderboard-header">
+                <div class="leaderboard-title-group">
+                    <h2 class="leaderboard-title">🏆 HALL OF FAME 🏆</h2>
+                    <p class="leaderboard-subtitle">Best Scores & Speedrun Records</p>
+                </div>
+                <button id="leaderboard-close" class="leaderboard-close-btn" aria-label="Close Leaderboard">✕</button>
+            </div>
+            <div class="leaderboard-tabs">
+                <button class="tab-btn active" data-tab="all">All Levels</button>
+                <button class="tab-btn" data-tab="1">Easy</button>
+                <button class="tab-btn" data-tab="2">Medium</button>
+                <button class="tab-btn" data-tab="3">Hard</button>
+            </div>
+            <div class="leaderboard-body">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Score</th>
+                            <th>Time</th>
+                            <th>Level</th>
+                            <th>Category</th>
+                            <th>Result</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-rows">
+                        <!-- Populated dynamically by game.js -->
+                    </tbody>
+                </table>
+                <div id="leaderboard-empty" class="leaderboard-empty hidden">
+                    No games recorded yet! Play a game to record your score!
+                </div>
+            </div>
+            <div class="leaderboard-footer">
+                <button id="clear-records-btn" class="clear-records-btn">Clear All</button>
+                <button id="close-modal-btn" class="close-modal-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="src/game.js"></script>
+</body>
+
+</html>
