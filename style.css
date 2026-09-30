@@ -15,6 +15,7 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 20px;
     padding: 10px 10px;
     color: white;
     font-size: 1.4rem;
@@ -23,6 +24,10 @@ footer {
     max-height: 80px;
     width: auto;
     object-fit: contain;
+}
+header h1 {
+    font-size: 1.6rem;
+    font-weight: normal;
 }
 footer{
     margin-bottom: 2rem;
